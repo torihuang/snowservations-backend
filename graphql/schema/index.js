@@ -1,11 +1,14 @@
 const { makeExecutableSchema } = require('graphql-tools');
 
 const resolvers = require('./resolvers.js');
+const userDefs = require('../defs/user/user.def.js');
 const recordDefs = require('../defs/record/record.def.js');
 
 const typeDefs = `
+  ${userDefs}
   ${recordDefs}
   type Query {
+    userInfo: User!
     recordInfo(_id: String!): Record!
     allRecords: [Record]!
   }
@@ -22,6 +25,7 @@ const typeDefs = `
       conditionsSlopeAngle: Int,
       conditionsAirTemperature: Int,
     ): Record!
+    newUser(email: String!, firstName: String, lastName: String, password: String): User
   }
 `;
 // signUpAdmin(adminSignupCode: String!, email: String!, firstName: String!, lastName: String!, password: String!): User

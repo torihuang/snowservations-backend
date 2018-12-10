@@ -6,6 +6,7 @@ module.exports = async () => {
   const client = await MongoClient.connect(MONGO_URL);
   const db = client.db('snowservationdb');
   return {
-    Records: db.collection('box'),
+    Users: db.collection('users'),
+    Records: db.collection('records'),
   };
 };

@@ -1,12 +1,17 @@
 const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
+const { ObjectId, ObjectID } = require('mongodb')
 
 // Scalars
 const objectIdType = new GraphQLScalarType({
-  name: 'ObjectID',
-  description: 'The `ObjectID` scalar type represents a [`BSON`](https://en.wikipedia.org/wiki/BSON) ID commonly used in `mongodb`.',
+  name: 'ObjectId',
+  description: 'The `ObjectId` scalar type represents a [`BSON`](https://en.wikipedia.org/wiki/BSON) ID commonly used in `mongodb`.',
   serialize (_id) {
-    if (_id instanceof ObjectID) {
+    console.log('_id', _id)
+    console.log('_id instanceof ObjectId', _id instanceof ObjectId)
+    console.log('typeof _id', typeof _id)
+    console.log('_id.toString()', _id.toString())
+    if (_id instanceof ObjectId) {
       return _id.toHexString()
     } else if (typeof _id === 'string') {
       return _id
@@ -16,16 +21,16 @@ const objectIdType = new GraphQLScalarType({
   },
   parseValue (_id) {
     if (typeof _id === 'string') {
-      return ObjectID.createFromHexString(_id)
+      return ObjectId.createFromHexString(_id)
     } else {
-      throw new Error(`${typeof _id} not convertible to ObjectID`)
+      throw new Error(`${typeof _id} not convertible to ObjectId`)
     }
   },
   parseLiteral (ast) {
     if (ast.kind === Kind.STRING) {
-      return ObjectID.createFromHexString(ast.value)
+      return ObjectId.createFromHexString(ast.value)
     } else {
-      throw new Error(`${ast.kind} not convertible to ObjectID`)
+      throw new Error(`${ast.kind} not convertible to ObjectId`)
     }
   },
 });

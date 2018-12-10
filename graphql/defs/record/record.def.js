@@ -1,9 +1,9 @@
 const recordDef = `
-  scalar ObjectID
+  scalar ObjectId
   scalar DateTime
 
   type Record {
-    _id: ObjectID!
+    _id: ObjectId!
     observers: [String]
     location: RecordLocation
     conditions: RecordConditions,
