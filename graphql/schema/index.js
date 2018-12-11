@@ -26,6 +26,7 @@ const typeDefs = `
       conditionsAirTemperature: Int,
     ): Record!
     newUser(email: String!, firstName: String!, lastName: String!, password: String!): User
+    signInUser(email: String!, password: String!): User
   }
 `;
 // signUpAdmin(adminSignupCode: String!, email: String!, firstName: String!, lastName: String!, password: String!): User

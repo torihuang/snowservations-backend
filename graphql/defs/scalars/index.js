@@ -7,10 +7,6 @@ const objectIdType = new GraphQLScalarType({
   name: 'ObjectId',
   description: 'The `ObjectId` scalar type represents a [`BSON`](https://en.wikipedia.org/wiki/BSON) ID commonly used in `mongodb`.',
   serialize (_id) {
-    console.log('_id', _id)
-    console.log('_id instanceof ObjectId', _id instanceof ObjectId)
-    console.log('typeof _id', typeof _id)
-    console.log('_id.toString()', _id.toString())
     if (_id instanceof ObjectId) {
       return _id.toHexString()
     } else if (typeof _id === 'string') {

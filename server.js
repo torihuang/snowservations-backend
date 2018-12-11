@@ -1,6 +1,7 @@
 const Express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 
 const serverConfig = require('./config.js');
 
@@ -71,7 +72,6 @@ const start = async () => {
   }));
 
   // start app
-  console.log("serverConfig", serverConfig)
   app.listen(serverConfig.port, (error) => {
     if (!error) {
       console.log(`Server is running on port: ${serverConfig.port}!`); // eslint-disable-line

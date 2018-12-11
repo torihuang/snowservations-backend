@@ -21,6 +21,10 @@ const userSchema = new Schema({
   },
   permissions: [String],
   lastLogin: { type: Date },
+  records: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Record',
+  }],
   createdAt: { type: 'Date' },
   updatedAt: { type: 'Date' },
 });
@@ -47,7 +51,7 @@ function encryptPassword(password, passedSalt) {
 
 userSchema.methods = {
   isValidPassword(password) {
-    const encryptedPassword = userUtils.encryptPassword(password, this.salt);
+    const encryptedPassword = encryptPassword(password, this.salt);
     return encryptedPassword === this.passwordHash;
   },
 };

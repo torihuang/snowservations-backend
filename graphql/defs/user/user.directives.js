@@ -105,11 +105,41 @@ const newUser = async (root, data) => {
   }
 };
 
+const signInUser = async (root, data) => {
+  try {
+    const userSignInRegex = new RegExp(`^${data.email.toLowerCase()}$`, 'i');
+    const user = await User.findOne({ email: userSignInRegex });
+    if (!user) {
+      return returnEmptyUserWithError({
+        key: 'USER_NOT_FOUND',
+        value: 'User does not exist with that email',
+      });
+    }
+
+    // If user cannot be validated, return error with empty user object
+    if (!user.isValidPassword(data.password)) {
+      return returnEmptyUserWithError({
+        key: 'INVALID_PASSWORD',
+        value: 'Incorrect password',
+      });
+    }
+    user.lastLogin = new Date();
+    await user.save();
+
+    user.token = getSignedToken(user, data);
+    return user;
+  } catch (err) {
+    console.log('error signing up new user');
+    throw new Error(err);
+  }
+};
+
 module.exports = {
   queries: {
     userInfo,
   },
   mutations: {
     newUser,
+    signInUser,
   },
 };
