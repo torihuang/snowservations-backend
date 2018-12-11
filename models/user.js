@@ -47,7 +47,7 @@ function encryptPassword(password, passedSalt) {
 
 userSchema.methods = {
   isValidPassword(password) {
-    const encryptedPassword = userUtils.encryptPassword(password, this.salt);
+    const encryptedPassword = encryptPassword(password, this.salt);
     return encryptedPassword === this.passwordHash;
   },
 };
