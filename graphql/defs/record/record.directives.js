@@ -1,5 +1,5 @@
 const Record = require('../../../models/record');
-
+const Auth = require('../../../services/auth');
 // Queries
 const allRecords = async (root, data) => {
   try {
@@ -18,7 +18,15 @@ const recordInfo = async (root, data) => {
 };
 
 const newRecord = async (root, data) => {
+  Auth.isValidUser(context);
+
+  const userContext = context.user;
+  if (!userContext || !userContext._id) throw new Error('Unauthorized');
+  let userIdToUse = userContext._id;
+
   try {
+    // Find user
+    const user = await User.findOne({ _id: userIdToUse });
     const newRecordData = {
       observers: data.observers,
       location: {
@@ -35,7 +43,17 @@ const newRecord = async (root, data) => {
       }
     }
     const record = new Record(newRecordData);
-    return await record.save();
+
+    // Add record to user
+    if (!user.records) user.records = [];
+    user.records.push(record);
+
+    await Promise.all([
+      record.save(),
+      user.save()
+    ]);
+
+    return record;
   } catch (err) {
     throw new Error(err);
   }

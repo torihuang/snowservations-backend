@@ -21,6 +21,10 @@ const userSchema = new Schema({
   },
   permissions: [String],
   lastLogin: { type: Date },
+  records: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Record',
+  }],
   createdAt: { type: 'Date' },
   updatedAt: { type: 'Date' },
 });
